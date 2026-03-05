@@ -11,19 +11,21 @@ def calculate_profit(trades_filename: str) -> None:
     matecoin_account = Decimal("0")
 
     for trade in trades:
-        bought = trade.get("bought")
-        sold = trade.get("sold")
-        price = Decimal(str(trade.get("matecoin_price")))
+        bought_value = trade.get("bought")
+        sold_value = trade.get("sold")
+        price_value = trade.get("matecoin_price")
 
-        if bought is not None:
-            bought_decimal = Decimal(str(bought))
-            matecoin_account += bought_decimal
-            earned_money -= bought_decimal * price
+        price = Decimal(str(price_value))
 
-        if sold is not None:
-            sold_decimal = Decimal(str(sold))
-            matecoin_account -= sold_decimal
-            earned_money += sold_decimal * price
+        if bought_value is not None:
+            bought = Decimal(str(bought_value))
+            matecoin_account += bought
+            earned_money -= bought * price
+
+        if sold_value is not None:
+            sold = Decimal(str(sold_value))
+            matecoin_account -= sold
+            earned_money += sold * price
 
     result: Dict[str, str] = {
         "earned_money": str(earned_money),
@@ -32,4 +34,4 @@ def calculate_profit(trades_filename: str) -> None:
 
     with open("profit.json", "w", encoding="utf-8") as file:
         json.dump(result, file)
-
+    
